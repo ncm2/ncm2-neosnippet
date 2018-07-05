@@ -62,6 +62,7 @@ let g:ncm2_snipmate#source = get(g:, 'ncm2_snipmate#source', {
             \ 'name': 'snipmate',
             \ 'priority': 7,
             \ 'mark': '',
+            \ 'word_pattern': '\S+',
             \ 'on_complete': 'ncm2_snipmate#on_complete',
             \ })
 
