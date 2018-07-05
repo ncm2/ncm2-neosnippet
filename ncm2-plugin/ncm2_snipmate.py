@@ -8,6 +8,7 @@ def wrap():
         txt = txt.replace('}', r'\}')
         txt = txt.replace(':', r'\:')
         txt = txt.replace('`', r'\`')
+        txt = txt.replace('\\', '\\\\')
         return txt
 
     def snipmate_placeholder(num, txt=''):
@@ -131,7 +132,7 @@ def wrap():
                 # [+] sign indicates that this completion item is
                 # expandable
                 if ud.get('ncm2_snipmate_auto', False):
-                    m['menu'] = '|+| ' + m['menu']
+                    m['menu'] = '(+) ' + m['menu']
                 else:
                     m['menu'] = '[+] ' + m['menu']
             else:
