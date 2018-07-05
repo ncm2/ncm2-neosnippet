@@ -31,6 +31,7 @@ inoremap <silent> <expr> <CR> ncm2_snipmate#expand_or("\<CR>", 'n')
 
 " c-j c-k for moving in snippet
 let g:snips_no_mappings = 1
+" imap <expr> <c-u> (pumvisible() ? "\<c-y>\<Plug>snipMateTrigger" : "\<Plug>snipMateTrigger")
 vmap <c-j> <Plug>snipMateNextOrTrigger
 vmap <c-k> <Plug>snipMateBack
 imap <expr> <c-k> pumvisible() ? "\<c-y>\<Plug>snipMateBack" : "\<Plug>snipMateBack"

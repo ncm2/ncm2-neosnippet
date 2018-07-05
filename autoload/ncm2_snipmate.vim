@@ -17,7 +17,7 @@ endfunc
 func! ncm2_snipmate#_do_expand_or()
     if ncm2_snipmate#completed_is_snippet()
         let s:completed = v:completed_item
-        call feedkeys("\<Plug>snipMateTrigger")
+        call feedkeys("\<Plug>snipMateTrigger", 'im')
         return ''
     endif
     call call('feedkeys', s:or_key)
