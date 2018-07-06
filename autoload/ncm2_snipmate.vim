@@ -5,6 +5,8 @@ let s:loaded = 1
 
 let s:completed = {}
 
+autocmd InsertLeave * let s:completed = {}
+
 func! ncm2_snipmate#expand_or(...)
     if !pumvisible()
         call call('feedkeys', a:000)
@@ -24,10 +26,18 @@ func! ncm2_snipmate#_do_expand_or()
     return ''
 endfunc
 
+if !has("patch-8.0.1493")
+    func! ncm2_snipmate#_do_expand_or()
+        call call('feedkeys', s:or_key)
+        return ''
+    endfunc
+endif
+
 func! ncm2_snipmate#completed_is_snippet()
-	if empty(v:completed_item)
-		return 0
-	endif
+    if empty(v:completed_item)
+        return 0
+    endif
+    let ud = {}
     silent! let ud = json_decode(v:completed_item.user_data)
     if empty(ud) || type(ud) != v:t_dict
         return 0
@@ -72,7 +82,15 @@ let g:ncm2_snipmate#source = extend(g:ncm2_snipmate#source,
 
 func! ncm2_snipmate#init()
     call ncm2#register_source(g:ncm2_snipmate#source)
-    let g:snipMateSources.ncm = funcref#Function('ncm2_snipmate#_snippets')
+    " https://github.com/neovim/neovim/pull/8003
+    if has("patch-8.0.1493")
+        let g:snipMateSources.ncm = funcref#Function('ncm2_snipmate#_snippets')
+    else
+        echohl ErrorMsg
+        echom 'ncm2-snipmate requires has("patch-8.0.1493")'
+            \  ' https://github.com/neovim/neovim/pull/8003'
+        echohl None
+    endif
 endfunc
 
 func! ncm2_snipmate#on_complete(ctx)
