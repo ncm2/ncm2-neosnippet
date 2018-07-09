@@ -3,12 +3,12 @@
 
 def wrap():
     def snipmate_text(txt):
+        txt = txt.replace('\\', '\\\\')
         txt = txt.replace('$', r'\$')
         txt = txt.replace('{', r'\{')
         txt = txt.replace('}', r'\}')
         txt = txt.replace(':', r'\:')
         txt = txt.replace('`', r'\`')
-        txt = txt.replace('\\', '\\\\')
         return txt
 
     def snipmate_placeholder(num, txt=''):
