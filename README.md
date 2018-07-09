@@ -1,6 +1,8 @@
 [snipMate](https://github.com/msanders/snipmate.vim) integration for
 [ncm2](https://github.com/ncm2/ncm2).
 
+![rec](https://user-images.githubusercontent.com/4538941/42503787-31ce9de6-846c-11e8-8d68-afc4a19fb223.gif)
+
 ## Features
 
 - snippet completion source
