@@ -44,3 +44,18 @@ imap <expr> <c-j> pumvisible() ? "\<c-y>\<Plug>snipMateNextOrTrigger" : "\<Plug>
 ```
 
 `:help snipMate` for more information on using snipMate.
+
+## API
+
+If you need more control over the completed item's snippet expansion, you
+might need these two APIs to help program your key mapping.
+
+`ncm2_snipmate#completed_is_snippet()`
+
+This function checks whether the `v:completed_item` is also a snippet.
+
+`ncm2_snipmate#inject_completed_snippet()`
+
+This function injects `v:completed_item` snippet into ultisnips, so that it
+will be expanded by ultisnips's trigger.
+

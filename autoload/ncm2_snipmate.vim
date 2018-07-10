@@ -5,7 +5,7 @@ let s:loaded = 1
 
 let s:completed = {}
 
-autocmd InsertLeave * let s:completed = {}
+autocmd InsertLeave * call ncm2_snipmate#cleanup_injected_snippet()
 
 func! ncm2_snipmate#expand_or(...)
     if !pumvisible()
@@ -18,7 +18,7 @@ endfunc
 
 func! ncm2_snipmate#_do_expand_or()
     if ncm2_snipmate#completed_is_snippet()
-        let s:completed = v:completed_item
+        call ncm2_snipmate#inject_completed_snippet()
         call feedkeys("\<Plug>snipMateTrigger", 'im')
         return ''
     endif
@@ -43,6 +43,14 @@ func! ncm2_snipmate#completed_is_snippet()
         return 0
     endif
     return get(ud, 'is_snippet', 0)
+endfunc
+
+func! ncm2_snipmate#inject_completed_snippet()
+    let s:completed = v:completed_item
+endfunc
+
+func! ncm2_snipmate#cleanup_injected_snippet()
+    let s:completed = {}
 endfunc
 
 func! ncm2_snipmate#_snippets(scopes, trigger, result)
