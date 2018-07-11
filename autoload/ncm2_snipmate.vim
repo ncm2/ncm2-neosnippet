@@ -47,17 +47,23 @@ func! ncm2_snipmate#_do_expand_completed()
         echom "v:completed_item is not a snippet"
         return ''
     endif
-    let ud = json_decode(v:completed_item.user_data)
+    let completed = deepcopy(v:completed_item)
+    let ud = json_decode(completed.user_data)
+    let completed.user_data = ud
     if ud.snippet == ''
         " snipmate builtin snippet
         call feedkeys("\<Plug>snipMateTrigger", "im")
         return ''
     endif
     let &undolevels = &undolevels
+    py3 from ncm2_lsp_snippet.utils import apply_additional_text_edits
+    py3 import vim
+    py3 apply_additional_text_edits(vim.eval('json_encode(l:completed)'))
     let snippet = ud.snipmate_snippet
     let trigger = ud.snippet_word
     let col = col('.') - len(trigger)
     sil exe 's/\V'.escape(trigger, '/\.').'\%#//'
+    call feedkeys("\<Plug>(ncm2_skipi_auto_trigger)", "m")
     return snipMate#expandSnip(snippet, 1, col)
 endfunc
 
