@@ -54,6 +54,6 @@ might need these two APIs to help program your key mapping.
 
 Checks whether the `v:completed_item` is also a snippet.
 
-`<Plug>(ncm2_expand_completed_snippet)`
+`<Plug>(ncm2_snipmate_expand_completed)`
 
 Use this key to expand the completed snippet.

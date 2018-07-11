@@ -3,7 +3,7 @@ if get(s:, 'loaded', 0)
 endif
 let s:loaded = 1
 
-inoremap <Plug>(ncm2_expand_completed_snippet) <c-r>=ncm2_snipmate#_do_expand_completed()<cr>
+inoremap <Plug>(ncm2_snipmate_expand_completed) <c-r>=ncm2_snipmate#_do_expand_completed()<cr>
 
 func! ncm2_snipmate#expand_or(...)
     if !pumvisible()
@@ -16,7 +16,7 @@ endfunc
 
 func! ncm2_snipmate#_do_expand_or()
     if ncm2_snipmate#completed_is_snippet()
-        call feedkeys("\<Plug>(ncm2_expand_completed_snippet)", "im")
+        call feedkeys("\<Plug>(ncm2_snipmate_expand_completed)", "im")
         return ''
     endif
     call call('feedkeys', s:or_key)
