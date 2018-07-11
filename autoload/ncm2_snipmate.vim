@@ -3,9 +3,7 @@ if get(s:, 'loaded', 0)
 endif
 let s:loaded = 1
 
-let s:completed = {}
-
-autocmd InsertLeave * call ncm2_snipmate#cleanup_injected_snippet()
+inoremap <Plug>(ncm2_expand_completed_snippet) <c-r>=ncm2_snipmate#_do_expand_completed()<cr>
 
 func! ncm2_snipmate#expand_or(...)
     if !pumvisible()
@@ -18,8 +16,7 @@ endfunc
 
 func! ncm2_snipmate#_do_expand_or()
     if ncm2_snipmate#completed_is_snippet()
-        call ncm2_snipmate#inject_completed_snippet()
-        call feedkeys("\<Plug>snipMateTrigger", 'im')
+        call feedkeys("\<Plug>(ncm2_expand_completed_snippet)", "im")
         return ''
     endif
     call call('feedkeys', s:or_key)
@@ -45,33 +42,23 @@ func! ncm2_snipmate#completed_is_snippet()
     return get(ud, 'is_snippet', 0)
 endfunc
 
-func! ncm2_snipmate#inject_completed_snippet()
-    let s:completed = v:completed_item
-endfunc
-
-func! ncm2_snipmate#cleanup_injected_snippet()
-    let s:completed = {}
-endfunc
-
-func! ncm2_snipmate#_snippets(scopes, trigger, result)
-	if empty(s:completed)
-		return
-	endif
-    if get(s:completed, 'user_data', '') == ''
-        return
+func! ncm2_snipmate#_do_expand_completed()
+    if !ncm2_snipmate#completed_is_snippet()
+        echom "v:completed_item is not a snippet"
+        return ''
     endif
-    try
-        let ud = json_decode(s:completed.user_data)
-        if ud.is_snippet && ud.snipmate_snippet != ''
-            " use version 1 snippet syntax
-            let word = ud.snippet_word
-            let a:result[word] = {'default': [ud.snipmate_snippet, 1]}
-        endif
-    catch
-        echom 'ncm2_snipmate failed feeding snippet data: ' .
-                \ s:completed.user_data . ', ' . 
-                \ v:exception
-    endtry
+    let ud = json_decode(v:completed_item.user_data)
+    if ud.snippet == ''
+        " snipmate builtin snippet
+        call feedkeys("\<Plug>snipMateTrigger", "im")
+        return ''
+    endif
+    let &undolevels = &undolevels
+    let snippet = ud.snipmate_snippet
+    let trigger = ud.snippet_word
+    let col = col('.') - len(trigger)
+    sil exe 's/\V'.escape(trigger, '/\.').'\%#//'
+    return snipMate#expandSnip(snippet, 1, col)
 endfunc
 
 " completion source
@@ -90,10 +77,8 @@ let g:ncm2_snipmate#source = extend(g:ncm2_snipmate#source,
 
 func! ncm2_snipmate#init()
     call ncm2#register_source(g:ncm2_snipmate#source)
-    " https://github.com/neovim/neovim/pull/8003
-    if has("patch-8.0.1493")
-        let g:snipMateSources.ncm = funcref#Function('ncm2_snipmate#_snippets')
-    else
+    if !has("patch-8.0.1493")
+        " https://github.com/neovim/neovim/pull/8003
         echohl ErrorMsg
         echom 'ncm2-snipmate requires has("patch-8.0.1493")'
             \  ' https://github.com/neovim/neovim/pull/8003'

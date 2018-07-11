@@ -52,10 +52,8 @@ might need these two APIs to help program your key mapping.
 
 `ncm2_snipmate#completed_is_snippet()`
 
-This function checks whether the `v:completed_item` is also a snippet.
+Checks whether the `v:completed_item` is also a snippet.
 
-`ncm2_snipmate#inject_completed_snippet()`
+`<Plug>(ncm2_expand_completed_snippet)`
 
-This function injects `v:completed_item` snippet into ultisnips, so that it
-will be expanded by ultisnips's trigger.
-
+Use this key to expand the completed snippet.

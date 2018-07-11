@@ -59,6 +59,8 @@ def wrap():
         ud = item['user_data']
         if not ud['is_snippet']:
             return item
+        if ud['snippet'] == '':
+            return item
         try:
             ast = parser.get_ast(ud['snippet'])
             snipmate = to_snipmate(ast)
