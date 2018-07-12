@@ -63,8 +63,9 @@ func! ncm2_snipmate#_do_expand_completed()
     let trigger = ud.snippet_word
     let col = col('.') - len(trigger)
     sil exe 's/\V'.escape(trigger, '/\.').'\%#//'
-    call feedkeys("\<Plug>(ncm2_skipi_auto_trigger)", "m")
-    return snipMate#expandSnip(snippet, 1, col)
+    let ret = snipMate#expandSnip(snippet, 1, col)
+    call feedkeys("\<Plug>(ncm2_skip_auto_trigger)", "m")
+    return ret
 endfunc
 
 " completion source
