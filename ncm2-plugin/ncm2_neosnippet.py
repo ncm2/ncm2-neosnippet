@@ -103,6 +103,8 @@ def wrap():
             ast = parser.get_ast(ud['snippet'])
             neosnippet = to_neosnippet(ast)
             if neosnippet:
+                if len(ast) == 1 and ast[0][0] == 'text':
+                    neosnippet += '${0}'
                 ud['neosnippet_snippet'] = neosnippet
                 ud['is_snippet'] = 1
             else:
