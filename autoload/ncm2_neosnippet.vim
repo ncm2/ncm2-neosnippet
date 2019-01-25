@@ -55,7 +55,7 @@ func! ncm2_neosnippet#_do_expand_completed()
         " FIXME use complete to empty the v:completed_item so that
         " neosnippet-s:get_completed_snippets will not mess with us. We don't
         " need neosnippet expanding v:completed_item directly anymore.
-        call complete(0, [])
+        call complete(1, [])
         call feedkeys("\<Plug>(neosnippet_expand_or_jump)", "im")
         return ''
     endif
