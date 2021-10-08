@@ -103,7 +103,7 @@ func! ncm2_neosnippet#init()
 endfunc
 
 func! ncm2_neosnippet#on_complete(ctx)
-	let snips = values(neosnippet#helpers#get_completion_snippets())
+	let snips = neosnippet#helpers#get_completion_snippets()
 	let matches = map(l:snips, '{"word":v:val["word"], "dup":1, "icase":1, "menu": "Snip: " . v:val["menu_abbr"], "user_data": {"is_snippet": 1}}')
 	call ncm2#complete(a:ctx, a:ctx.startccol, matches)
 endfunc
